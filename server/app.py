@@ -9,7 +9,7 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import Park
+from models import Park, Hiker, Trail
 from flask_cors import CORS
 from datetime import datetime
 
@@ -27,11 +27,27 @@ class Parks(Resource):
         parks = [park.to_dict() for park in Park.query.all()]
         return make_response(parks, 200)
 
-# class HikerList(Resource):
-#     def get(self):
-        
+class Hikers(Resource):
+    def get(self):
+        hikers = [hiker.to_dict() for hiker in Hiker.query.all()]
+        return make_response(hikers, 200)
+    
+class Trails(Resource):
+    def get(self):
+        trails = [trail.to_dict() for trail in Trail.query.all()]
+        return make_response(trails, 200)
+    
+class TrailsForPark(Resource):
+    def get(self, park_id):
+        trails = Trail.query.filter_by(park_id=park_id).all()
+        response = [trail.to_dict() for trail in trails]
+        return make_response(response, 200)
+      
 
 api.add_resource(Parks, '/parks')
+api.add_resource(Hikers, '/hikers')
+api.add_resource(Trails, '/trails')
+api.add_resource(TrailsForPark, '/parks/<int:park_id>/trails')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
