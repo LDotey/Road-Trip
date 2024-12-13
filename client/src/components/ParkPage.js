@@ -1,18 +1,9 @@
-import { useEffect, useState } from "react";
 import { useContext } from "react";
-import ParksContext from "./ParksContext";
+import AppContext from "/AppContext.js";
 import ParkCard from "./ParkCard";
 
 function ParkPage() {
-  const { parks } = useContext(ParksContext);
-
-  //   useEffect(() => {
-  //     fetch("/parks")
-  //       .then((r) => r.json())
-  //       .then((parksArray) => {
-  //         setParks(parksArray);
-  //       });
-  //   }, []);
+  const { parks } = useContext(AppContext);
 
   return (
     <div>

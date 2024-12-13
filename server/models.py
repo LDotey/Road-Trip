@@ -27,6 +27,8 @@ class Hiker(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False, unique= True)
+    skill_level = db.Column(db.String, nullable=False, default='Beginner')
 
     # relationship
     trails = db.relationship('Trail', back_populates='hiker')
@@ -36,7 +38,7 @@ class Hiker(db.Model, SerializerMixin):
 
 
 class Trail(db.Model):
-    __tablename__='trails'
+    __tablename__= "trails"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
