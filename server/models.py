@@ -1,4 +1,4 @@
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -44,8 +44,8 @@ class Trail(db.Model):
     name = db.Column(db.String, nullable=False)
     difficulty = db.Column(db.String)  # Difficulty of the trail (e.g., easy, medium, hard)
     dog_friendly = db.Column(db.Boolean, default=False)  
-    park_id = db.Column(db.Integer, db.ForeignKey('parks.id'), nullable=False)  
-    hiker_id = db.Column(db.Integer, db.ForeignKey('hikers.id'), nullable=False) 
+    park_id = db.Column(db.Integer, db.ForeignKey('parks.id'), name='fk_trail_park_id', nullable=False)  
+    hiker_id = db.Column(db.Integer, db.ForeignKey('hikers.id'),name='fk_trail_hiker_id', nullable=True) 
 
     # relationships
     park = db.relationship('Park', back_populates='trails')

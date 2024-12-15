@@ -18,13 +18,13 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     fetch("/hikers")
       .then((r) => r.json())
-      .then((hikers_array) => setParks(hikers_array));
+      .then((hikers_array) => setHikers(hikers_array));
   }, []);
 
   useEffect(() => {
     fetch("/trails")
       .then((r) => r.json())
-      .then((trails_array) => setParks(trails_array));
+      .then((trails_array) => setTrails(trails_array));
   }, []);
 
   return (
@@ -33,3 +33,5 @@ export const AppProvider = ({ children }) => {
     </AppContext.Provider>
   );
 };
+
+export default AppContext;
