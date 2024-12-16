@@ -17,6 +17,16 @@ class Park(db.Model, SerializerMixin):
     # relationship
     trails = db.relationship('Trail', back_populates='park')
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'state': self.state,
+            'image': self.image,
+            # Exclude the 'trails' field to avoid recursion
+            # 'trails': [trail.id for trail in self.trails]  # Or use `only` if you want specific fields
+        }
+
     def __repr__(self):
         return f'<Park {self.id}, {self.name}>'
     
@@ -37,7 +47,7 @@ class Hiker(db.Model, SerializerMixin):
         return f'<Hiker {self.id}, {self.name}>'
 
 
-class Trail(db.Model):
+class Trail(db.Model, SerializerMixin):
     __tablename__= "trails"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -50,6 +60,15 @@ class Trail(db.Model):
     # relationships
     park = db.relationship('Park', back_populates='trails')
     hiker = db.relationship('Hiker', back_populates='trails') 
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'difficulty': self.difficulty,
+            # Exclude the full park data to avoid recursion
+            'park_id': self.park_id
+        }
 
     def __repr__(self):
         return f'<Trail {self.id}, {self.name}>'

@@ -25,7 +25,7 @@ def index():
 class Parks(Resource):
     def get(self):
         parks = [park.to_dict() for park in Park.query.all()]
-        return make_response(parks, 200)
+        return jsonify(parks, 200)
 
 class Hikers(Resource):
     def get(self):
@@ -37,24 +37,56 @@ class Trails(Resource):
         trails = [trail.to_dict() for trail in Trail.query.all()]
         return make_response(trails, 200)
     
-class TrailsForPark(Resource):
-    def get(self, park_id):
-        trails = Trail.query.filter_by(park_id=park_id).all()
-        response = [trail.to_dict() for trail in trails]
-        return make_response(response, 200)
-    
-class ParkDetail(Resource):
-    def get(self, park_id):
-        park = Park.query.get(park_id)
-        response = park.to_dict()
-        return make_response(response, 200)
+# class TrailsForPark(Resource):
+#     def get(self, park_id):
+#             try:
+#                 trails = Trail.query.filter_by(park_id=park_id).all()
+#                 if not trails:
+#                     return make_response({"message": "no trails found for this park."}, 404)
+#                 print(f"Fetched trails: {trails}")
+                
+#                 trails_response = [trail.to_dict() for trail in trails]
+#                 return make_response(trails_response, 200)
+            
+#             except Exception as e:
+#                 print(f"Error fetching trails for park {park_id}: {str(e)}")
+#                 return make_response({"message": "An error occurred while fetching trails."}, 500)
+
+# class ParkDetail(Resource):
+#     def get(self, park_id):
+#         try:
+#             # Fetch the park by ID
+#             park = Park.query.get(park_id)
+#             if not park:
+#                 return make_response({"message": "Park not found"}, 404)
+            
+#             # Fetch trails for the selected park
+#             trails = Trail.query.filter_by(park_id=park_id).all()
+#             trails_response = [trail.to_dict() for trail in trails]
+
+#             # Construct the response: return park data along with the trails
+#             park_response = park.to_dict()
+#             park_response['trails'] = trails_response
+
+#             return make_response(park_response, 200)
+#         except Exception as e:
+#             print(f"Error fetching park and trails for park {park_id}: {str(e)}")
+#             return make_response({"message": "An error occurred while fetching the park details."}, 500)
+
+
+            
+# class ParkDetail(Resource):
+#     def get(self, park_id):
+#         park = Park.query.get(park_id)
+#         response = park.to_dict()
+#         return make_response(response, 200)
       
 
 api.add_resource(Parks, '/parks')
 api.add_resource(Hikers, '/hikers')
 api.add_resource(Trails, '/trails')
-api.add_resource(TrailsForPark, '/parks/<int:park_id>/trails')
-api.add_resource(ParkDetail, '/parks/<int:park_id>')
+# /api.add_resource(TrailsForPark, '/parks/<int:park_id>/trails')
+# api.add_resource(ParkDetail, '/parks/<int:park_id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -12,7 +12,8 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     fetch("/parks")
       .then((r) => r.json())
-      .then((parks_array) => setParks(parks_array));
+      .then((parks_array) => setParks(parks_array))
+      .catch((error) => console.error("Error fetching parks:", error));
   }, []);
 
   useEffect(() => {

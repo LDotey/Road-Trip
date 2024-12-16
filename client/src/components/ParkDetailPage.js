@@ -17,21 +17,34 @@ function ParkDetailPage() {
     setPark(selectedPark);
     //   }, [id, parks]);
 
-    const parkTrails = trails.filter((trail) => {
-      console.log(
-        "Trail ID:",
-        trail.id,
-        "Trail Park ID:",
-        trail.park_id,
-        "URL Park ID:",
-        id
-      );
-      return trail.park_id === parseInt(id);
-    });
-
-    setFilteredTrails(parkTrails);
-    console.log("Filtered Trails:", parkTrails);
+    fetch(`/parks/${id}/trails`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch trails");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setFilteredTrails(data);
+        // setLoading(false);
+      });
   }, [id, parks]);
+
+  //   const parkTrails = trails.filter((trail) => {
+  //     console.log(
+  //       "Trail ID:",
+  //       trail.id,
+  //       "Trail Park ID:",
+  //       trail.park_id,
+  //       "URL Park ID:",
+  //       id
+  //     );
+  //     return trail.park_id === parseInt(id);
+  //   });
+
+  //   setFilteredTrails(parkTrails);
+  //   console.log("Filtered Trails:", parkTrails);
+  // }, [id, parks]);
 
   if (!park) return <div>Loading...</div>;
 
@@ -43,9 +56,13 @@ function ParkDetailPage() {
 
       <h2>{park.name} Trails</h2>
       <div className="trails-grid">
-        {filteredTrails.map((trail) => (
-          <TrailCard key={trail.id} trail={trail} />
-        ))}
+        {filteredTrails.length === 0 ? (
+          <p>No trails found for this park.</p>
+        ) : (
+          filteredTrails.map((trail) => (
+            <TrailCard key={trail.id} trail={trail} />
+          ))
+        )}
       </div>
     </div>
   );
