@@ -11,9 +11,8 @@ from flask_restful import Api, Resource
 from config import app, db, api
 # Add your model imports
 # from models import Park , Hiker, Trail
-from models import Park
+from models import Park, Hiker
 from flask_cors import CORS
-from datetime import datetime
 
 CORS(app)
 
@@ -30,10 +29,10 @@ class Parks(Resource):
         parks = [park.to_dict() for park in Park.query.all()]
         return parks, 200
 
-# class Hikers(Resource):
-#     def get(self):
-#         hikers = [hiker.to_dict() for hiker in Hiker.query.all()]
-#         return hikers, 200
+class Hikers(Resource):
+    def get(self):
+        hikers = [hiker.to_dict() for hiker in Hiker.query.all()]
+        return hikers, 200
     
 # class Trails(Resource):
 #     def get(self):
@@ -86,7 +85,7 @@ class Parks(Resource):
       
 
 api.add_resource(Parks, '/parks')
-# api.add_resource(Hikers, '/hikers')
+api.add_resource(Hikers, '/hikers')
 # api.add_resource(Trails, '/trails')
 
 

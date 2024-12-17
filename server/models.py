@@ -8,8 +8,7 @@ from config import db
 
 class Park(db.Model, SerializerMixin):
     __tablename__ = "parks"
-    # serialize_rules=("-trails.park")
-    # serialize_rules=("-hikers")
+  
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -24,39 +23,29 @@ class Park(db.Model, SerializerMixin):
     # hikers = db.relationship('Hiker', secondary="trails", viewonly=True)
 
 
-    # serialize_rules=("-trails")
-
-    # def to_dict(self):
-    #     return {
-    #         'id': self.id,
-    #         'name': self.name,
-    #         'state': self.state,
-    #         'image': self.image,
-    #         # Exclude the 'trails' field to avoid recursion
-    #         'trails': [trail.id for trail in self.trails]  # Or use `only` if you want specific fields
-    #     }
+  
 
     def __repr__(self):
         return f'<Park {self.id}, {self.name}>'
     
 
     
-# class Hiker(db.Model, SerializerMixin):
-#     __tablename__ = "hikers"
-#     serialize_rules=("-hiker.trails")
+class Hiker(db.Model, SerializerMixin):
+    __tablename__ = "hikers"
+    # serialize_rules=("-hiker.trails")
 
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String, nullable=False)
-#     email = db.Column(db.String, nullable=False, unique= True)
-#     skill_level = db.Column(db.String, nullable=False, default='Beginner')
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False, unique= True)
+    skill_level = db.Column(db.String, nullable=False, default='Beginner')
 
-#     # relationship
-#     # trails = db.relationship('Trail', back_populates='hiker')
-#     trails = db.relationship('Trail', backref='hiker', lazy=True)
+    # relationship
+    # trails = db.relationship('Trail', back_populates='hiker')
+    # trails = db.relationship('Trail', backref='hiker', lazy=True)
 
-#     def __repr__(self):
-#         return f'<Hiker {self.id}, {self.name}>'
+    def __repr__(self):
+        return f'<Hiker {self.id}, {self.name}>'
 
 
 # class Trail(db.Model, SerializerMixin):
