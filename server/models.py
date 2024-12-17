@@ -20,7 +20,7 @@ class Park(db.Model, SerializerMixin):
     # relationship
     # trails = db.relationship('Trail', back_populates='park')
     
-    # hikers = db.relationship('Hiker', secondary="trails", viewonly=True)
+    hikers = db.relationship('Hiker', secondary="trails", viewonly=True)
 
 
   
@@ -56,12 +56,12 @@ class Trail(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
     difficulty = db.Column(db.String)  # Difficulty of the trail (e.g., easy, medium, hard)
     dog_friendly = db.Column(db.Boolean, default=False)  
-    # park_id = db.Column(db.Integer, db.ForeignKey('parks.id'), name='fk_trail_park_id', nullable=False)  
-    # hiker_id = db.Column(db.Integer, db.ForeignKey('hikers.id'),name='fk_trail_hiker_id', nullable=False) 
+    park_id = db.Column(db.Integer, db.ForeignKey('parks.id'), name='fk_trail_park_id', nullable=False)  
+    hiker_id = db.Column(db.Integer, db.ForeignKey('hikers.id'),name='fk_trail_hiker_id', nullable=False) 
 
 #     # relationships
-#     # park = db.relationship('Park', back_populates='trails')
-#     # hiker = db.relationship('Hiker', back_populates='trails') 
+    # park = db.relationship('Park', back_populates='trails')
+    # hiker = db.relationship('Hiker', back_populates='trails') 
 
 
 

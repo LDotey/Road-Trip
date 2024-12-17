@@ -25,7 +25,6 @@ CORS(app)
 
 class Parks(Resource):
     def get(self):
-        # breakpoint()
         parks = [park.to_dict() for park in Park.query.all()]
         return parks, 200
 
