@@ -10,8 +10,8 @@ from flask_restful import Api, Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-# from models import Park , Hiker, Trail
-from models import Park, Hiker
+from models import Park , Hiker, Trail
+# from models import Park, Hiker
 from flask_cors import CORS
 
 CORS(app)
@@ -34,10 +34,10 @@ class Hikers(Resource):
         hikers = [hiker.to_dict() for hiker in Hiker.query.all()]
         return hikers, 200
     
-# class Trails(Resource):
-#     def get(self):
-#         trails = [trail.to_dict() for trail in Trail.query.all()]
-#         return jsonify(trails, 200)
+class Trails(Resource):
+    def get(self):
+        trails = [trail.to_dict() for trail in Trail.query.all()]
+        return trails, 200
     
 # class TrailsForPark(Resource):
 #     def get(self, park_id):
@@ -86,7 +86,7 @@ class Hikers(Resource):
 
 api.add_resource(Parks, '/parks')
 api.add_resource(Hikers, '/hikers')
-# api.add_resource(Trails, '/trails')
+api.add_resource(Trails, '/trails')
 
 
 
