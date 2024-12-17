@@ -4,12 +4,14 @@
 
 # Remote library imports
 from flask import request, jsonify, make_response 
-from flask_restful import Resource
+from flask_migrate import Migrate
+from flask_restful import Api, Resource
 
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import Park, Hiker, Trail
+# from models import Park , Hiker, Trail
+from models import Park
 from flask_cors import CORS
 from datetime import datetime
 
@@ -18,24 +20,25 @@ CORS(app)
 
 # Views go here!
 
-@app.route('/')
-def index():
-    return '<h1>Project Server</h1>'
+# @app.route('/')
+# def index():
+#     return '<h1>Project Server</h1>'
 
 class Parks(Resource):
     def get(self):
+        # breakpoint()
         parks = [park.to_dict() for park in Park.query.all()]
-        return jsonify(parks, 200)
+        return parks, 200
 
-class Hikers(Resource):
-    def get(self):
-        hikers = [hiker.to_dict() for hiker in Hiker.query.all()]
-        return make_response(hikers, 200)
+# class Hikers(Resource):
+#     def get(self):
+#         hikers = [hiker.to_dict() for hiker in Hiker.query.all()]
+#         return hikers, 200
     
-class Trails(Resource):
-    def get(self):
-        trails = [trail.to_dict() for trail in Trail.query.all()]
-        return make_response(trails, 200)
+# class Trails(Resource):
+#     def get(self):
+#         trails = [trail.to_dict() for trail in Trail.query.all()]
+#         return jsonify(trails, 200)
     
 # class TrailsForPark(Resource):
 #     def get(self, park_id):
@@ -83,8 +86,11 @@ class Trails(Resource):
       
 
 api.add_resource(Parks, '/parks')
-api.add_resource(Hikers, '/hikers')
-api.add_resource(Trails, '/trails')
+# api.add_resource(Hikers, '/hikers')
+# api.add_resource(Trails, '/trails')
+
+
+
 # /api.add_resource(TrailsForPark, '/parks/<int:park_id>/trails')
 # api.add_resource(ParkDetail, '/parks/<int:park_id>')
 
