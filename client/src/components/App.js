@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppProvider } from "./AppContext";
 import ParkPage from "./ParkPage";
 import ParkDetailPage from "./ParkDetailPage";
@@ -12,12 +12,12 @@ function App() {
     <AppProvider>
       <Router>
         <NavBar />
-        <Switch>
+        <Routes>
           <Route exact path="/parks" component={ParkPage} />
           <Route path="/park/:id" component={ParkDetailPage} />
           <Route path="/trails" component={TrailsPage} />
           <Route path="/hikers" component={HikersPage} />
-        </Switch>
+        </Routes>
       </Router>
     </AppProvider>
   );

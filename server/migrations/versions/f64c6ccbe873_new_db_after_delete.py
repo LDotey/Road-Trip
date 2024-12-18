@@ -1,8 +1,8 @@
-"""initial migration
+"""new db after delete
 
-Revision ID: 851c801599fb
+Revision ID: f64c6ccbe873
 Revises: 
-Create Date: 2024-12-15 14:27:08.146046
+Create Date: 2024-12-17 15:49:58.762594
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '851c801599fb'
+revision = 'f64c6ccbe873'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -38,10 +38,10 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('difficulty', sa.String(), nullable=True),
     sa.Column('dog_friendly', sa.Boolean(), nullable=True),
-    sa.Column('fk_trail_park_id', sa.Integer(), nullable=False),
-    sa.Column('fk_trail_hiker_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['fk_trail_hiker_id'], ['hikers.id'], name=op.f('fk_trails_fk_trail_hiker_id_hikers')),
-    sa.ForeignKeyConstraint(['fk_trail_park_id'], ['parks.id'], name=op.f('fk_trails_fk_trail_park_id_parks')),
+    sa.Column('park_id', sa.Integer(), nullable=False),
+    sa.Column('hiker_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['hiker_id'], ['hikers.id'], name=op.f('fk_trails_hiker_id_hikers')),
+    sa.ForeignKeyConstraint(['park_id'], ['parks.id'], name=op.f('fk_trails_park_id_parks')),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

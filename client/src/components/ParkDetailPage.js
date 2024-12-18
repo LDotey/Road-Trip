@@ -15,10 +15,13 @@ function ParkDetailPage() {
     console.log("All trails:", trails);
     const selectedPark = parks.find((park) => park.id === parseInt(id));
     setPark(selectedPark);
-    //   }, [id, parks]);
+
+    console.log(selectedPark);
 
     fetch(`/parks/${id}/trails`)
       .then((response) => {
+        // console.log("/parks/<int:id>/trails");
+        console.log(response);
         if (!response.ok) {
           throw new Error("Failed to fetch trails");
         }
@@ -26,25 +29,17 @@ function ParkDetailPage() {
       })
       .then((data) => {
         setFilteredTrails(data);
-        // setLoading(false);
       });
   }, [id, parks]);
 
-  //   const parkTrails = trails.filter((trail) => {
-  //     console.log(
-  //       "Trail ID:",
-  //       trail.id,
-  //       "Trail Park ID:",
-  //       trail.park_id,
-  //       "URL Park ID:",
-  //       id
-  //     );
-  //     return trail.park_id === parseInt(id);
-  //   });
+  // const parkTrails = trails.filter((trail) => {
+  //   return trail.park_id === parseInt(id);
+  // });
 
-  //   setFilteredTrails(parkTrails);
-  //   console.log("Filtered Trails:", parkTrails);
-  // }, [id, parks]);
+  // setFilteredTrails(parkTrails);
+  // console.log("Filtered Trails:", parkTrails);
+
+  // [id, parks]);
 
   if (!park) return <div>Loading...</div>;
 

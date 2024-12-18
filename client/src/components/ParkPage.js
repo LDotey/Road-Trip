@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.js";
+// import { useHistory } from "react-router-dom";
 import AppContext from "./AppContext.js";
 import ParkCard from "./ParkCard";
 
 function ParkPage() {
   const { parks } = useContext(AppContext);
-  const history = useHistory();
+  // const history = useHistory();
 
-  const handleParkClick = (parkId) => {
-    history.push(`/park/${parkId}`);
-  };
+  // const handleParkClick = (parkId) => {
+  //   history.push(`/park/${parkId}`);
+  // };
 
   return (
     <div>

@@ -2,7 +2,7 @@ import React from "react";
 import { useAppContext } from "./AppContext";
 
 function TrailCard() {
-  const { trails } = useAppContext();
+  const { trails, parks } = useAppContext();
 
   return (
     <div>
@@ -11,7 +11,7 @@ function TrailCard() {
         {trails.map((trail) => (
           <li key={trail.id}>
             {trail.name} - Difficulty: {trail.difficulty} - Dog Friendly:{" "}
-            {trail.dog_friendly ? "Yes" : "No"} - Park: {trail.park_name}
+            {trail.dog_friendly ? "Yes" : "No"} - Park: {parks.name}
           </li>
         ))}
       </ul>

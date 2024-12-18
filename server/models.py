@@ -18,21 +18,20 @@ class Park(db.Model, SerializerMixin):
 
 
     # relationship
-    # trails = db.relationship('Trail', back_populates='park')
+    trails = db.relationship('Trail', back_populates='park', cascade='all, delete-orphan')
     
-    hikers = db.relationship('Hiker', secondary="trails", viewonly=True)
-
-
-  
+    hikers = association_proxy('trails', 'hiker',
+                               creator=lambda hiker_obj: Trail(hiker=hiker_obj))
+# Association proxy to get projects for this employee through assignments
+    # projects = association_proxy('assignments', 'project',
+    #                              creator=lambda project_obj: Assignment(project=project_obj))
 
     def __repr__(self):
         return f'<Park {self.id}, {self.name}>'
-    
-
-    
+       
 class Hiker(db.Model, SerializerMixin):
     __tablename__ = "hikers"
-    # serialize_rules=("-hiker.trails")
+    serialize_rules=("-hiker.trails", "-trails.park_id", "-trails.hiker_id",)
 
 
     id = db.Column(db.Integer, primary_key=True)
@@ -41,27 +40,31 @@ class Hiker(db.Model, SerializerMixin):
     skill_level = db.Column(db.String, nullable=False, default='Beginner')
 
     # relationship
-    # trails = db.relationship('Trail', back_populates='hiker')
+    trails = db.relationship('Trail', back_populates='hiker', cascade='all, delete-orphan')
     # trails = db.relationship('Trail', backref='hiker', lazy=True)
-
+    parks = association_proxy('trails', 'park',
+                              creator=lambda park_obj: Trail(park=park_obj))
+  
     def __repr__(self):
         return f'<Hiker {self.id}, {self.name}>'
 
 
 class Trail(db.Model, SerializerMixin):
     __tablename__= "trails"
-    # serialize_rules=("-park.trails", "-hiker.trails")
+    serialize_rules=("-park.trails", "-hiker.trails", )
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     difficulty = db.Column(db.String)  # Difficulty of the trail (e.g., easy, medium, hard)
     dog_friendly = db.Column(db.Boolean, default=False)  
-    park_id = db.Column(db.Integer, db.ForeignKey('parks.id'), name='fk_trail_park_id', nullable=False)  
-    hiker_id = db.Column(db.Integer, db.ForeignKey('hikers.id'),name='fk_trail_hiker_id', nullable=False) 
+    park_id = db.Column(db.Integer, db.ForeignKey('parks.id'), nullable=False)  
+    hiker_id = db.Column(db.Integer, db.ForeignKey('hikers.id'), nullable=False) 
+
+
 
 #     # relationships
-    # park = db.relationship('Park', back_populates='trails')
-    # hiker = db.relationship('Hiker', back_populates='trails') 
+    park = db.relationship('Park', back_populates='trails')
+    hiker = db.relationship('Hiker', back_populates='trails') 
 
 
 
