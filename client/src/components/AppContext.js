@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
-const AppContext = createContext();
+const MyContext = createContext();
 
-export const useAppContext = () => useContext(AppContext);
+// export const useAppContext = () => useContext(AppContext);
 
-export const AppProvider = ({ children }) => {
+const MyProvider = ({ children }) => {
   const [parks, setParks] = useState([]);
   const [hikers, setHikers] = useState([]);
   const [trails, setTrails] = useState([]);
@@ -29,10 +29,10 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ parks, hikers, trails }}>
+    <MyContext.Provider value={{ parks, hikers, trails }}>
       {children}
-    </AppContext.Provider>
+    </MyContext.Provider>
   );
 };
 
-export default AppContext;
+export { MyContext, MyProvider };

@@ -1,16 +1,35 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AppProvider } from "./AppContext";
-import ParkPage from "./ParkPage";
-import ParkDetailPage from "./ParkDetailPage";
-import TrailsPage from "./TrailsPage";
-import HikersPage from "./HikersPage";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { MyProvider } from "./AppContext";
+import { Outlet } from "react-router-dom";
+// import ParkPage from "./ParkPage";
+// import ParkDetailPage from "./ParkDetailPage";
+// import TrailsPage from "./TrailsPage";
+// import HikersPage from "./HikersPage";
 import NavBar from "./NavBar";
 
 function App() {
   return (
-    <AppProvider>
-      <Router>
+    <div>
+      <MyProvider>
+        <h1>My App</h1>
+        <header>
+          <NavBar />
+        </header>
+        <Outlet />
+      </MyProvider>
+    </div>
+  );
+}
+
+export default App;
+
+/* <div>
+          <h1>Project Client</h1>
+          <ParkPage />
+        </div> */
+
+/* <Router>
         <NavBar />
         <Routes>
           <Route exact path="/parks" component={ParkPage} />
@@ -18,16 +37,4 @@ function App() {
           <Route path="/trails" component={TrailsPage} />
           <Route path="/hikers" component={HikersPage} />
         </Routes>
-      </Router>
-    </AppProvider>
-  );
-}
-
-export default App;
-
-{
-  /* <div>
-          <h1>Project Client</h1>
-          <ParkPage />
-        </div> */
-}
+      </Router> */

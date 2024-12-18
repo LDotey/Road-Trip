@@ -9,9 +9,9 @@ from flask_restful import Api, Resource
 
 # Local imports
 from config import app, db, api
+
 # Add your model imports
 from models import Park , Hiker, Trail
-# from models import Park, Hiker
 from flask_cors import CORS
 
 CORS(app)

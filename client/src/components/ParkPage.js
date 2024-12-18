@@ -1,15 +1,17 @@
 import { useContext } from "react";
 // import { useHistory } from "react-router-dom";
-import AppContext from "./AppContext.js";
+import { useNavigate } from "react-router-dom";
+import { MyContext } from "./AppContext";
 import ParkCard from "./ParkCard";
 
 function ParkPage() {
-  const { parks } = useContext(AppContext);
+  const { parks } = useContext(MyContext);
   // const history = useHistory();
+  const navigate = useNavigate();
 
-  // const handleParkClick = (parkId) => {
-  //   history.push(`/park/${parkId}`);
-  // };
+  const handleParkClick = (parkId) => {
+    navigate(`/park/${parkId}`);
+  };
 
   return (
     <div>

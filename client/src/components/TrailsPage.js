@@ -1,8 +1,8 @@
-import React from "react";
-import { useAppContext } from "./AppContext";
+import React, { useContext } from "react";
+import { MyContext } from "./AppContext";
 
 function TrailCard() {
-  const { trails, parks } = useAppContext();
+  const { trails, parks } = useContext(MyContext);
 
   return (
     <div>
