@@ -32,14 +32,14 @@ function ParkDetailPage() {
       .then((data) => {
         setFilteredTrails(data);
       });
-  }, [id, parks]);
+  }, [id, parks, trails]);
 
-  // const parkTrails = trails.filter((trail) => {
-  //   return trail.park_id === parseInt(id);
-  // });
+  const parkTrails = trails.filter((trail) => {
+    return trail.park_id === parseInt(id);
+  });
 
-  // setFilteredTrails(parkTrails);
-  // console.log("Filtered Trails:", parkTrails);
+  setFilteredTrails(parkTrails);
+  console.log("Filtered Trails:", parkTrails);
 
   // [id, parks]);
 
