@@ -38,7 +38,27 @@ class Trails(Resource):
     def get(self):
         trails = [trail.to_dict() for trail in Trail.query.all()]
         return trails, 200
-    
+              
+class ParkDetail(Resource):
+    def get(self, park_id):
+        park = [park.to_dict() for park in Park.query.get(park_id)]
+        return park, 200
+      
+
+api.add_resource(Parks, '/parks')
+api.add_resource(Hikers, '/hikers')
+api.add_resource(Trails, '/trails')
+api.add_resource(ParkDetail, '/park/<int:park_id>')
+
+
+
+
+# api.add_resource(TrailsForPark, '/park/<int:park_id>/trails')
+# api.add_resource(ParkDetail, '/park/<int:park_id>')
+
+if __name__ == '__main__':
+    app.run(port=5555, debug=True)
+
 # class TrailsForPark(Resource):
 #     def get(self, park_id):
 #             try:
@@ -74,25 +94,4 @@ class Trails(Resource):
 #         except Exception as e:
 #             print(f"Error fetching park and trails for park {park_id}: {str(e)}")
 #             return make_response({"message": "An error occurred while fetching the park details."}, 500)
-
-
-            
-# class ParkDetail(Resource):
-#     def get(self, park_id):
-#         park = Park.query.get(park_id)
-#         response = park.to_dict()
-#         return make_response(response, 200)
-      
-
-api.add_resource(Parks, '/parks')
-api.add_resource(Hikers, '/hikers')
-api.add_resource(Trails, '/trails')
-
-
-
-# /api.add_resource(TrailsForPark, '/parks/<int:park_id>/trails')
-# api.add_resource(ParkDetail, '/parks/<int:park_id>')
-
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
-
+  

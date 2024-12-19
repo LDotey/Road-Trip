@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useAppContext } from "./AppContext";
+import { MyContext } from "./AppContext";
 
 function HikerDetail() {
   // get hikers id from URL
   const { id } = useParams();
-  const { hikers, trails } = useAppContext();
+  const { hikers, trails } = useContext(MyContext);
   const [hiker, setHiker] = useState(null);
 
   useEffect(() => {
-    // find the hike in the context state based on id
+    // find the hiker in the context state based on id
     const foundHiker = hikers.find((hiker) => hiker.id === parseInt(id));
     setHiker(foundHiker);
   }, [id, hikers]);
@@ -18,7 +18,7 @@ function HikerDetail() {
 
   // filter by trails this hiker has hiked
 
-  const hikerTrails = trails.filer((trail) => trail.hiker_id === hiker.id);
+  const hikerTrails = trails.filter((trail) => trail.hiker_id === hiker.id);
 
   return (
     <div>

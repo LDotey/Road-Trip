@@ -3,6 +3,7 @@ import ParkPage from "./components/ParkPage";
 import ParkDetailPage from "./components/ParkDetailPage";
 import HikersList from "./components/HikersPage";
 import TrailCard from "./components/TrailsPage";
+import HikerDetail from "./components/HikerDetail";
 
 const routes = [
   {
@@ -14,12 +15,16 @@ const routes = [
         element: <ParkPage />,
       },
       {
-        path: "/parks/:id",
+        path: "/park/:id",
         element: <ParkDetailPage />,
       },
       {
         path: "/hikers",
         element: <HikersList />,
+      },
+      {
+        path: "/hiker/:id",
+        element: <HikerDetail />,
       },
       {
         path: "/trails",
