@@ -2,17 +2,13 @@ import React from "react";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MyProvider } from "./AppContext";
 import { Outlet } from "react-router-dom";
-// import ParkPage from "./ParkPage";
-// import ParkDetailPage from "./ParkDetailPage";
-// import TrailsPage from "./TrailsPage";
-// import HikersPage from "./HikersPage";
 import NavBar from "./NavBar";
 
 function App() {
   return (
     <div>
       <MyProvider>
-        <h1>My App</h1>
+        <h1>ROAD TRIP</h1>
         <header>
           <NavBar />
         </header>

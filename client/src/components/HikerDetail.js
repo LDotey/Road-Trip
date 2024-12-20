@@ -22,16 +22,16 @@ function HikerDetail() {
 
   return (
     <div>
-      <h2>{hiker.name}</h2>
+      <h2>Hiker Details:</h2>
+      <h3>{hiker.name}</h3>
       <p>Skill Level: {hiker.skill_level}</p>
       <h3>Trails Hiked:</h3>
-      <ul>
-        {hikerTrails.map((trail) => (
-          <li key={trail.id}>
-            {trail.name} - Difficulty: {trail.difficulty}
-          </li>
-        ))}
-      </ul>
+
+      {hikerTrails.map((trail) => (
+        <p key={trail.id}>
+          {trail.name} - Difficulty: {trail.difficulty}
+        </p>
+      ))}
     </div>
   );
 }

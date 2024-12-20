@@ -5,15 +5,15 @@ function NavBar() {
   return (
     <nav className="navbar">
       <ul>
-        <li>
+        <p>
           <NavLink to="/parks">Parks</NavLink>
-        </li>
-        <li>
+        </p>
+        {/* <li>
           <NavLink to="/trails">Trails</NavLink>
-        </li>
-        <li>
+        </li> */}
+        <p>
           <NavLink to="/hikers">Hikers</NavLink>
-        </li>
+        </p>
       </ul>
     </nav>
   );

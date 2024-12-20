@@ -28,6 +28,18 @@ class Parks(Resource):
         # breakpoint()
         parks = [park.to_dict() for park in Park.query.all()]
         return parks, 200
+    
+    def post(self):
+        data = request.get_json()
+        new_park = Park(
+            name=data["name"],
+            image=data["image"],
+            state=data["state"]
+        )
+        db.session.add(new_park)
+        db.session.commit()
+
+        return new_park.to_dict(), 201
 
 class Hikers(Resource):
     def get(self):

@@ -12,6 +12,11 @@ body {
   background-color: #f4f4f9; /* Light background color */
 }
 
+.navbar {
+  display: list-item;
+  justify-content: center;
+}
+
 /* Grid for Displaying Parks */
 .parks-grid {
   display: grid;
