@@ -1,19 +1,20 @@
 import React, { useContext } from "react";
-// import { MyContext } from "./AppContext";
+import { MyContext } from "./AppContext";
+// import CreateTrail from "./NewTrailForm";
 
-function TrailCard({ trail, park }) {
+function TrailCard({ trail }) {
+  const { parks, trails } = useContext(MyContext);
+  // const park = parks.find((p) => p.id === park_id);
+
   return (
-    <div>
-      <ul>
-        <li key={trail.id}>
-          {trail.name} | | Difficulty: {trail.difficulty} | | Dog Friendly:{" "}
-          {trail.dog_friendly ? "Yes" : "No"} | | Park:{" "}
-          {park ? park.name : "Park not found"}
-        </li>
-      </ul>
+    <div className="trail-card">
+      <h4>{trail.name}</h4>
+      <p>Difficulty: {trail.difficulty}</p>
+      <p>Dog Friendly: {trail.dog_friendly ? "Yes" : "No"}</p>
     </div>
   );
 }
+export default TrailCard;
 
 // function TrailCard() {
 //   const { trail, parks } = useContext(MyContext);
@@ -38,5 +39,3 @@ function TrailCard({ trail, park }) {
 //     </div>
 //   );
 // }
-
-export default TrailCard;

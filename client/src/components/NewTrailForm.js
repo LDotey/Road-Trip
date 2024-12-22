@@ -1,86 +1,97 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import { MyContext } from "./AppContext";
+import { useParams } from "react-router-dom";
 
 function CreateTrail() {
-  const { trails, setTrails, parks } = useContext(MyContext);
-  const [trailData, setTrailData] = useState({
-    name: "",
-    difficulty: "",
-    dog_friendly: false,
-    park_id: "",
+  const { setTrails } = useContext(MyContext);
+  const { park_id } = useParams();
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required("Trail name is required"),
+    difficulty: yup.string().required("Difficulty is required"),
+    dog_friendly: yup.boolean().required("Dog friendly status is required"),
+    // park_id: yup.number().positive("Park ID is required"),
+  });
+  // Formik setup with validation schema
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      difficulty: "",
+      dog_friendly: false,
+      park_id: park_id,
+    },
+    validationSchema: formSchema,
+    onSubmit: (values) => {
+      console.log("Form data submitted: ", values);
+
+      // Send the form data to the backend
+      fetch("trails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((response) => console.log(response))
+        // response.json())
+        .then((newTrail) => {
+          console.log(newTrail);
+          // Update the state of trails on successful form submission
+          setTrails((prevTrails) => [...prevTrails, newTrail]);
+        })
+        .catch((error) => {
+          console.error("Error creating trail:", error);
+        });
+      console.log(formik.values);
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTrailData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    fetch("/trails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: trailData.name,
-        difficulty: trailData.difficulty,
-        dog_friendly: trailData.dog_friendly,
-        park_id: trailData.park_id,
-      }),
-    })
-      .then((response) => response.json())
-      .then((newTrail) => {
-        setTrails((prevTrails) => [...prevTrails, newTrail]);
-      })
-      .catch((error) => {
-        console.error("Error creating trail:", error);
-      });
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Trail Name:
+    <div>
+      {/* <CreateTrail onSubmit={formik.handleSubmit} /> */}
+      <form onSubmit={formik.handleSubmit}>
+        <label htmlFor="name">Trail Name:</label>
+        <br />
         <input
-          type="text"
+          id="name"
           name="name"
-          value={trailData.name}
-          onChange={handleChange}
+          type="text"
+          onChange={formik.handleChange}
+          value={formik.values.name}
         />
-      </label>
-      <label>
-        Difficulty:
+        <p style={{ color: "red" }}>{formik.errors.name}</p>
+
+        <label htmlFor="difficulty">Difficulty:</label>
+        <br />
         <input
-          type="checkbox"
-          name="dog_friendly"
-          checked={trailData.dog_friendly}
-          onChange={(e) =>
-            setTrailData({ ...trailData, dog_friendly: e.target.checked })
-          }
+          id="difficulty"
+          name="difficulty"
+          type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.difficulty}
         />
-      </label>
-      <label>
-        Park:
-        <select
-          name="park_id"
-          value={trailData.park_id}
-          onChange={handleChange}
-        >
-          <option value="">Select a park</option>
-          {parks.map((park) => (
-            <option key={park.id} value={park.id}>
-              {park.name}
-            </option>
-          ))}
-        </select>
+        <p style={{ color: "red" }}>{formik.errors.difficulty}</p>
+
+        <label htmlFor="dog_friendly">Dog Friendly:</label>
+        <br />
+        <input
+          id="dog_friendly"
+          name="dog_friendly"
+          type="checkbox"
+          onChange={formik.handleChange}
+          checked={formik.values.dog_friendly}
+        />
+        <p style={{ color: "red" }}>{formik.errors.dog_friendly}</p>
+
+        <input type="hidden" name="park_id" value={formik.values.park_id} />
+
         <button type="submit">Create Trail</button>
-      </label>
-    </form>
+      </form>
+    </div>
   );
 }
+
 export default CreateTrail;

@@ -50,6 +50,22 @@ class Trails(Resource):
     def get(self):
         trails = [trail.to_dict() for trail in Trail.query.all()]
         return trails, 200
+    
+    def post(self):
+        data = request.get_json()
+
+        print("received data:", data)
+
+        new_trail = Trail(
+            name=data["name"],
+            difficulty=data["difficulty"],
+            dog_friendly=data["dog_friendly"],
+            park_id=data["park_id"],
+        )
+        db.session.add(new_trail)
+        db.session.commit()
+
+        return new_trail.to_dict(), 201
               
 class ParkDetail(Resource):
     def get(self, park_id):
