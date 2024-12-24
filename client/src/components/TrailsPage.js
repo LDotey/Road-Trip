@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { MyContext } from "./AppContext";
 // import CreateTrail from "./NewTrailForm";
 
 function TrailCard({ trail }) {
-  const { parks, trails } = useContext(MyContext);
+  const { trails } = useContext(MyContext);
   // const park = parks.find((p) => p.id === park_id);
-
+  useEffect(() => {
+    console.log("Trails updated:", trails);
+  }, [trails]);
   return (
     <div className="trail-card">
       <h4>{trail.name}</h4>

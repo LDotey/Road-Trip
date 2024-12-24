@@ -62,9 +62,9 @@ def seed_hikers():
     db.session.commit()
     print("Seeded hikers")
 
-# def seed_trails():
-    # Trail.query.delete()
-    # trails = []
+def seed_trails():
+    Trail.query.delete()
+    trails = []
     # parks = Park.query.all()
     # hikers = Hiker.query.all()
 
@@ -111,4 +111,4 @@ if __name__ == '__main__':
         # Seed code goes here!
         seed_parks()
         seed_hikers()
-        # seed_trails()
+        seed_trails()

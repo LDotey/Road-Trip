@@ -6,22 +6,42 @@ import CreateTrail from "./NewTrailForm";
 
 function ParkDetailPage() {
   const { id } = useParams();
-  const { parks, trails } = useContext(MyContext);
+  const { parks, trails, setTrails } = useContext(MyContext);
   const [park, setPark] = useState(null);
-  // const [filteredTrails, setFilteredTrails] = useState([]);
 
   console.log("park id from url:", id);
 
   useEffect(() => {
     console.log("loading park details...");
-    // console.log("All trails:", trails);
-    // console.log("loading park details...");
 
     // Find the selected park by the ID from the URL
     const selectedPark = parks.find((park) => park.id === parseInt(id));
     setPark(selectedPark);
     console.log(selectedPark);
-  }, [id, parks, park, trails]);
+  }, [id, parks]);
+
+  // useEffect(() => {
+  //   if (park) {
+  //     const updatedPark = {
+  //       ...park,
+  //       trails: trails.filter((trail) => trail.park_id === park.id), // Sync park's trails with global `trails`
+  //     };
+  //     setPark(updatedPark); // Update the park's trails with the latest from global context
+  //   }
+  // }, [trails, park]);
+
+  // useEffect(() => {
+  //   console.log("Trails in context updated:", trails); // Log the updated trails
+
+  //   if (park) {
+  //     // Ensure park's trails are updated with the latest from global `trails`
+  //     const updatedPark = {
+  //       ...park,
+  //       trails: trails.filter((trail) => trail.park_id === park.id),
+  //     };
+  //     setPark(updatedPark); // Update the park's trails locally
+  //   }
+  // }, [trails]);
 
   // if (!park) return <div>Loading...</div>;
 

@@ -5,7 +5,7 @@ import { MyContext } from "./AppContext";
 import { useParams } from "react-router-dom";
 
 function CreateTrail() {
-  const { setTrails, hikers } = useContext(MyContext);
+  const { setParks, setTrails, hikers } = useContext(MyContext);
   const { id } = useParams();
   console.log(useParams());
 
@@ -44,16 +44,26 @@ function CreateTrail() {
         .then((response) => response.json())
         .then((newTrail) => {
           console.log(newTrail);
+
           // Update the state of trails on successful form submission
           setTrails((prevTrails) => [...prevTrails, newTrail]);
+
+          // update park's trails in the parks state as well
+          setParks((prevParks) =>
+            prevParks.map((park) =>
+              park.id === newTrail.park_id
+                ? { ...park, trails: [...park.trails, newTrail] }
+                : park
+            )
+          );
         })
+
         .catch((error) => {
           console.error("Error creating trail:", error);
         });
       console.log(formik.values);
     },
   });
-  //   console.log(useParams());
 
   return (
     <div>

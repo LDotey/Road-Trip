@@ -31,10 +31,10 @@ const routes = [
         path: "/trails",
         element: <TrailCard />,
       },
-      {
-        path: "/trails",
-        element: <CreateTrail />,
-      },
+      // {
+      //   path: "/trails",
+      //   element: <CreateTrail />,
+      // },
     ],
   },
 ];
