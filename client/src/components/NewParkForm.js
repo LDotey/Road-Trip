@@ -1,76 +1,87 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import { MyContext } from "./AppContext";
 
 function CreatePark() {
-  const { parks, setParks } = useContext(MyContext);
-  const [parkData, setParkData] = useState({
-    name: "",
-    state: "",
-    image: "",
+  const { setParks } = useContext(MyContext);
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required("Park name is required"),
+    state: yup.string().required("State is required"),
+    image: yup.string().required("Must include a park image as a URL"),
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setParkData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      state: "",
+      image: "",
+    },
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    validationSchema: formSchema,
+    onSubmit: (values) => {
+      console.log("NewPark form data submitted:", values);
 
-    fetch("/parks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: parkData.name,
-        state: parkData.state,
-        image: parkData.image,
-      }),
-    })
-      .then((response) => response.json())
-      .then((newPark) => {
-        setParks((prevParks) => [...prevParks, newPark]);
+      // Send form data to the backend
+      fetch("/parks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
       })
-      .catch((error) => {
-        console.error("Error creating park:", error);
-      });
-  };
+        .then((response) => response.json())
+        .then((newPark) => {
+          console.log(newPark);
+          setParks((prevParks) => [...prevParks, newPark]);
+        })
+        .catch((error) => {
+          console.error("Error creating park:", error);
+        });
+      console.log(formik.values);
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Park Name:
+    <div>
+      <form onSubmit={formik.handleSubmit}>
+        <label htmlFor="name">Park Name:</label>
+        <br />
         <input
-          type="text"
+          id="name"
           name="name"
-          value={parkData.name}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        State:
-        <input
           type="text"
+          onChange={formik.handleChange}
+          value={formik.values.name}
+        />
+        <p style={{ color: "red" }}>{formik.errors.name}</p>
+
+        <label htmlFor="state">State:</label>
+        <br />
+        <input
+          id="state"
           name="state"
-          value={parkData.state}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Image URL:
-        <input
           type="text"
-          name="image"
-          value={parkData.image}
-          onChange={handleChange}
+          onChange={formik.handleChange}
+          value={formik.values.state}
         />
-      </label>
-      <button type="submit">Create Park</button>
-    </form>
+        <p style={{ color: "red" }}>{formik.errors.state}</p>
+
+        <label htmlFor="image">Image:</label>
+        <br />
+        <input
+          id="image"
+          name="image"
+          type="text"
+          onChange={formik.handleChange}
+          value={formik.values.image}
+        />
+        <p style={{ color: "red" }}>{formik.errors.image}</p>
+
+        <button type="submit">Create Park</button>
+      </form>
+    </div>
   );
 }
 

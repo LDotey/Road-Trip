@@ -6,7 +6,7 @@ import CreateTrail from "./NewTrailForm";
 
 function ParkDetailPage() {
   const { id } = useParams();
-  const { parks, trails, setTrails } = useContext(MyContext);
+  const { parks } = useContext(MyContext);
   const [park, setPark] = useState(null);
 
   console.log("park id from url:", id);
