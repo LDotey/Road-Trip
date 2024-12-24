@@ -32,7 +32,7 @@ const routes = [
         element: <TrailCard />,
       },
       {
-        path: "/create-trail/:parkId",
+        path: "/trails",
         element: <CreateTrail />,
       },
     ],

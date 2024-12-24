@@ -52,20 +52,32 @@ class Trails(Resource):
         return trails, 200
     
     def post(self):
-        data = request.get_json()
+        try:
+            data = request.get_json()
+            print("Received data:", data)
 
-        print("received data:", data)
+            # park = Park.query.get(data["park_id"]) 
+            # hiker = Hiker.query.get(data["hiker_id"]) 
+            # park = Park.query.get(park_id)
+            # if not park:
+            #     return {"error": "Missing park_id or hiker_id"}, 400
 
-        new_trail = Trail(
-            name=data["name"],
-            difficulty=data["difficulty"],
-            dog_friendly=data["dog_friendly"],
-            park_id=data["park_id"],
-        )
-        db.session.add(new_trail)
-        db.session.commit()
+            print("received data:", data)
 
-        return new_trail.to_dict(), 201
+            new_trail = Trail(
+                name=data["name"],
+                difficulty=data["difficulty"],
+                dog_friendly=data["dog_friendly"],
+                park_id = data["park_id"],
+                hiker_id = data["hiker_id"]
+                )
+            db.session.add(new_trail)
+            db.session.commit()
+
+            return new_trail.to_dict(), 201
+        except KeyError as e:
+                return {'error':f'Missing key: {str(e)}'}, 500
+
               
 class ParkDetail(Resource):
     def get(self, park_id):
