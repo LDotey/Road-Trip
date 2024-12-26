@@ -33,7 +33,7 @@ def fake_hikers():
 
     return Hiker(
         name=fake.name(),
-        email=fake.email(),
+        # email=fake.email(),
         skill_level=rc(skill_levels)
     )
 

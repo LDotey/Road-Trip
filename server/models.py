@@ -32,7 +32,7 @@ class Hiker(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, nullable=False, unique= True)
+    # email = db.Column(db.String, nullable=False, unique= True)
     skill_level = db.Column(db.String, nullable=False, default='Beginner')
 
     # relationship

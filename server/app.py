@@ -46,6 +46,18 @@ class Hikers(Resource):
         hikers = [hiker.to_dict() for hiker in Hiker.query.all()]
         return hikers, 200
     
+    def post(self):
+        data = request.get_json()
+        new_hiker = Hiker(
+            name=data["name"],
+            # email=data["email"],
+            skill_level=data["skill_level"]
+        )
+        db.session.add(new_hiker)
+        db.session.commit()
+
+        return new_hiker.to_dict(), 201
+    
 class Trails(Resource):
     def get(self):
         trails = [trail.to_dict() for trail in Trail.query.all()]

@@ -29,7 +29,9 @@ const MyProvider = ({ children }) => {
   }, []);
 
   return (
-    <MyContext.Provider value={{ parks, setParks, hikers, trails, setTrails }}>
+    <MyContext.Provider
+      value={{ parks, setParks, hikers, setHikers, trails, setTrails }}
+    >
       {children}
     </MyContext.Provider>
   );

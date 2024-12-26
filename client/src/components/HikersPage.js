@@ -1,9 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { MyContext } from "./AppContext";
+import CreateHiker from "./NewHikerForm";
 
 function HikersList() {
   const { hikers } = useContext(MyContext);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+
+  const toggleCreateForm = () => {
+    setShowCreateForm((prev) => !prev);
+  };
 
   return (
     <div>
@@ -17,6 +23,12 @@ function HikersList() {
           </li>
         ))}
       </ul>
+      {/* <h5>Add A Hiker</h5> */}
+      <button onClick={toggleCreateForm}>
+        {showCreateForm ? "Cancel" : "Add New Hiker"}
+      </button>
+
+      {showCreateForm && <CreateHiker />}
     </div>
   );
 }
