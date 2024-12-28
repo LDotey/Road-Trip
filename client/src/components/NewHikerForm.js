@@ -4,34 +4,17 @@ import * as yup from "yup";
 import { MyContext } from "./AppContext";
 
 function CreateHiker() {
-  //   const { setHikers } = useContext(MyContext);
   const context = useContext(MyContext);
-  //   console.log(context); // Check if context contains setHikers
   const { setHikers } = context;
-
-  //   const checkEmail = async (email) => {
-  //     const response = await fetch(`/api/check-email?email=${email}`);
-  //     const data = await response.json();
-
-  //     return !data.exists;
-  //   };
 
   const formSchema = yup.object().shape({
     name: yup.string().required("Hiker name is required"),
-    email: yup.string(),
-    //   .email("Invalid email")
-    //   .required("email is required")
-    //   .test("email-unique", "Email is already in use", async (email) => {
-    //     const emailUnique = await checkEmail(email);
-    //     return emailUnique;
-    //   }),
     skill_level: yup.string().required("must enter a skill level"),
   });
 
   const formik = useFormik({
     initialValues: {
       name: "",
-      //   email: "",
       skill_level: "",
     },
 
@@ -72,17 +55,6 @@ function CreateHiker() {
           value={formik.values.name}
         />
         <p style={{ color: "red" }}>{formik.errors.name}</p>
-
-        {/* <label htmlFor="email">Email</label>
-        <br />
-        <input
-          id="email"
-          name="email"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
-        <p style={{ color: "red" }}>{formik.errors.email}</p> */}
 
         <label htmlFor="skill_level">Skill Level</label>
         <br />

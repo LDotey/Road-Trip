@@ -58,6 +58,41 @@ class Hikers(Resource):
 
         return new_hiker.to_dict(), 201
     
+    def patch(self, id):
+        data = request.get_json()
+        hiker = Hiker.query.get(id)
+        if not hiker:
+            return {"error": "Hiker not found"}, 404
+
+        # Update hiker details
+        hiker.name = data.get("name", hiker.name)
+        hiker.skill_level = data.get("skill_level", hiker.skill_level)
+
+        # Update trails if provided
+        if "trails" in data:
+            # Assuming 'trails' is a list of trail objects with IDs
+            hiker.trails = []  # Reset the current trails (if needed)
+            for trail_data in data["trails"]:
+                trail = Trail.query.get(trail_data["id"])  # Get the trail by ID
+                if trail:
+                    hiker.trails.append(trail)  # Add the selected trail to the hiker's list
+
+        db.session.commit()
+        return hiker.to_dict(), 200
+   
+
+    def delete(self, id):
+        hiker = Hiker.query.filter_by(id=id).first()
+        
+        if not hiker:
+            return {"error": "Hiker not found"}, 404
+        
+        db.session.delete(hiker)
+        db.session.commit()
+        
+        return {"message": "Hiker deleted successfully"}, 200
+
+    
 class Trails(Resource):
     def get(self):
         trails = [trail.to_dict() for trail in Trail.query.all()]
@@ -67,14 +102,6 @@ class Trails(Resource):
         try:
             data = request.get_json()
             print("Received data:", data)
-
-            # park = Park.query.get(data["park_id"]) 
-            # hiker = Hiker.query.get(data["hiker_id"]) 
-            # park = Park.query.get(park_id)
-            # if not park:
-            #     return {"error": "Missing park_id or hiker_id"}, 400
-
-            print("received data:", data)
 
             new_trail = Trail(
                 name=data["name"],
@@ -89,7 +116,35 @@ class Trails(Resource):
             return new_trail.to_dict(), 201
         except KeyError as e:
                 return {'error':f'Missing key: {str(e)}'}, 500
+        
+    def patch(self, id):
+        # Update an existing trail
+        data = request.get_json()
+        trail = Trail.query.get(id)
+        if not trail:
+            return {"error": "Trail not found"}, 404
+        
+        # Update trail details
+        trail.name = data.get("name", trail.name)
+        trail.difficulty = data.get("difficulty", trail.difficulty)
+        trail.dog_friendly = data.get("dog_friendly", trail.dog_friendly)
+        trail.park_id = data.get("park_id", trail.park_id)
+        trail.hiker_id = data.get("hiker_id", trail.hiker_id)
 
+        db.session.commit()
+
+        return trail.to_dict(), 200
+    
+    def delete(self, id):
+        # Delete a trail by its ID
+        trail = Trail.query.get(id)
+        if not trail:
+            return {"error": "Trail not found"}, 404
+
+        db.session.delete(trail)
+        db.session.commit()
+
+        return {"message": "Trail deleted successfully"}, 200
               
 class ParkDetail(Resource):
     def get(self, park_id):
@@ -98,8 +153,8 @@ class ParkDetail(Resource):
       
 
 api.add_resource(Parks, '/parks')
-api.add_resource(Hikers, '/hikers')
-api.add_resource(Trails, '/trails')
+api.add_resource(Hikers, '/hikers', '/hikers/<int:id>')
+api.add_resource(Trails, '/trails', '/trails/<int:id>')
 api.add_resource(ParkDetail, '/park/<int:park_id>')
 
 

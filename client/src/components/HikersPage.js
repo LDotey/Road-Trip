@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { MyContext } from "./AppContext";
 import CreateHiker from "./NewHikerForm";
+import { useParams } from "react-router-dom";
 
 function HikersList() {
   const { hikers } = useContext(MyContext);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const { id } = useParams();
 
   const toggleCreateForm = () => {
     setShowCreateForm((prev) => !prev);

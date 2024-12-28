@@ -20,31 +20,6 @@ function ParkDetailPage() {
     console.log(selectedPark);
   }, [id, parks]);
 
-  // useEffect(() => {
-  //   if (park) {
-  //     const updatedPark = {
-  //       ...park,
-  //       trails: trails.filter((trail) => trail.park_id === park.id), // Sync park's trails with global `trails`
-  //     };
-  //     setPark(updatedPark); // Update the park's trails with the latest from global context
-  //   }
-  // }, [trails, park]);
-
-  // useEffect(() => {
-  //   console.log("Trails in context updated:", trails); // Log the updated trails
-
-  //   if (park) {
-  //     // Ensure park's trails are updated with the latest from global `trails`
-  //     const updatedPark = {
-  //       ...park,
-  //       trails: trails.filter((trail) => trail.park_id === park.id),
-  //     };
-  //     setPark(updatedPark); // Update the park's trails locally
-  //   }
-  // }, [trails]);
-
-  // if (!park) return <div>Loading...</div>;
-
   return park ? (
     <div className="park-detail">
       <h2>{park.name}</h2>

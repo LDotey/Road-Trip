@@ -18,14 +18,15 @@ parks_data = [
     {"name": "Glacier", "image": "https://thelandmarkproject.com/cdn/shop/products/2020GlacierNationalParkSticker.png?v=1658782923", "state": "Montana"}
 ]
 
-# trails_data = [
-        # (name="", difficulty="", dog_friendly=, park_id=, hiker_id=)
-#     {"name": "Old Faithful Geyser", "difficulty": "Medium", "dog_friendly": False},
-#     {"name": "Half Dome", "difficulty": "Hard", "dog_friendly": False},
-#     {"name": "Bright Angel Trail", "difficulty": "Medium", "dog_friendly": False},
-#     {"name": "Angel's Landing", "difficulty": "Hard", "dog_friendly": False},
-#     {"name": "Highline Trail", "difficulty": "Medium", "dog_friendly": False},
-# ]
+trails_data = [
+    # ("name":"", "difficulty":"", "dog_friendly":, "park_id":, "hiker_id":)
+
+    {"name": "Old Faithful Geyser", "difficulty": "Medium", "dog_friendly": False, "park_id":1, "hiker_id":4},
+    {"name": "Half Dome", "difficulty": "Hard", "dog_friendly": False, "park_id":2, "hiker_id":2},
+    {"name": "Bright Angel Trail", "difficulty": "Medium", "dog_friendly": False, "park_id":3, "hiker_id":1},
+    {"name": "Angel's Landing", "difficulty": "Hard", "dog_friendly": False, "park_id":4, "hiker_id":5},
+    {"name": "Highline Trail", "difficulty": "Medium", "dog_friendly": False, "park_id":5, "hiker_id":6},
+]
 
 def fake_hikers():
     fake=Faker()
@@ -39,20 +40,19 @@ def fake_hikers():
 
 def seed_parks():
     Park.query.delete()
+    parks = []
     
-
     for park_data in parks_data:
         park = Park(
             name=park_data['name'],
             image=park_data['image'],
             state=park_data['state']
         )
-        db.session.add(park)
-        db.session.commit()
+        parks.append(park)
+    db.session.add_all(parks)
+    db.session.commit()
 
-        print("Database seeded with parks")
-
-    # db.session.add_all(parks_data)
+    print(f"Seeded {len(parks)} parks for all parks")
 
 def seed_hikers():
     Hiker.query.delete()
@@ -65,28 +65,32 @@ def seed_hikers():
 def seed_trails():
     Trail.query.delete()
     trails = []
-    # parks = Park.query.all()
-    # hikers = Hiker.query.all()
+    parks = Park.query.all()
+    hikers = Hiker.query.all()
 
-    # if not hikers:
-    #     print("no hikers found. seed hikers first")
-    #     return
+    if not hikers:
+        print("no hikers found. seed hikers first")
+        return
 
     # for park in parks:
     #     for trail_data in trails_data:
     #         hiker = rc(hikers)
+# Loop over the trails_data and assign each trail to the correct park
+    for index, trail_data in enumerate(trails_data):
+        park = parks[index]  # Match the park based on the index
+        trail = Trail(
+                name=trail_data['name'],
+                difficulty=trail_data['difficulty'],
+                dog_friendly=trail_data['dog_friendly'],
+                park_id=park.id,
+                hiker_id=trail_data['hiker_id']
+            )
+        trails.append(trail)
 
-    #         trail = Trail(
-    #             name=trail_data['name'],
-    #             difficulty=trail_data['difficulty'],
-    #             dog_friendly=trail_data['dog_friendly'],
-    #             park_id=park.id,
-    #             hiker_id=hiker.id
-    #         )
-    #         db.session.add(trail)
-    #         # trails.append(trail)
-    #         db.session.commit()
-    #         print(f"Seeded {trail.name} for park {park.name} with hiker_id{hiker.id}")
+    db.session.add_all(trails)
+            # trails.append(trail)
+    db.session.commit()
+    print(f"Seeded {len(trails)} trails for all parks.")
 
     # hikers = Hiker.query.all()
     # for hiker in hikers:
