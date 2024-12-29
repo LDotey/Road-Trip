@@ -6,7 +6,7 @@ import CreateTrail from "./NewTrailForm";
 
 function ParkDetailPage() {
   const { id } = useParams();
-  const { parks } = useContext(MyContext);
+  const { parks, setTrails } = useContext(MyContext);
   const [park, setPark] = useState(null);
 
   console.log("park id from url:", id);
@@ -33,7 +33,14 @@ function ParkDetailPage() {
           <p>No trails found for this park.</p>
         ) : (
           park.trails.map((trail) => {
-            return <TrailCard key={trail.id} trail={trail} parks={parks} />;
+            return (
+              <TrailCard
+                key={trail.id}
+                trail={trail}
+                setTrails={setTrails}
+                parks={parks}
+              />
+            );
           })
         )}
         <h5>Add a New Trail to this park:</h5>

@@ -34,30 +34,56 @@ const MyProvider = ({ children }) => {
   }, []);
 
   // Update trail
-  const updateTrail = async (id, updatedTrailData) => {
-    try {
-      const response = await fetch(`/trails/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedTrailData),
+  const updateTrail = (id, updatedTrailData) => {
+    fetch(`/trails/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedTrailData),
+    })
+      .then((response) => response.json())
+      .then((updatedTrail) => {
+        console.log("Updated Trail from server:", updatedTrail);
+        setTrails((prevTrails) => {
+          const updatedTrails = prevTrails.map((trail) =>
+            trail.id === id ? { ...trail, ...updatedTrail } : trail
+          );
+          console.log(
+            "Updated Trails Array (after state change):",
+            updatedTrails
+          );
+          return updatedTrails;
+        });
+      })
+      .catch((error) => {
+        console.error("Error updating trail:", error);
       });
-
-      if (response.ok) {
-        const updatedTrail = await response.json();
-        setTrails((prevTrails) =>
-          prevTrails.map((trail) =>
-            trail.id === updatedTrail.id ? updatedTrail : trail
-          )
-        );
-      } else {
-        console.error("Failed to update trail");
-      }
-    } catch (error) {
-      console.error("Error updating trail:", error);
-    }
   };
+  // const updateTrail = async (id, updatedTrailData) => {
+  //   try {
+  //     const response = await fetch(`/trails/${id}`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(updatedTrailData),
+  //     });
+
+  //     if (response.ok) {
+  //       const updatedTrail = await response.json();
+  //       setTrails((prevTrails) =>
+  //         prevTrails.map((trail) =>
+  //           trail.id === updatedTrail.id ? updatedTrail : trail
+  //         )
+  //       );
+  //     } else {
+  //       console.error("Failed to update trail");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating trail:", error);
+  //   }
+  // };
 
   const updateHiker = async (id, updatedHikerData) => {
     try {

@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 // import CreateTrail from "./NewTrailForm";
 
 function TrailCard({ trail }) {
+  console.log("Trail prop in TrailCard:", trail); // Debugging log
+
   const { trails, updateTrail } = useContext(MyContext);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -24,7 +26,8 @@ function TrailCard({ trail }) {
         values.difficulty !== trail.difficulty ||
         values.dog_friendly !== trail.dog_friendly
       ) {
-        updateTrail(trail.id, values); // Call the updateTrail function passed from the context
+        updateTrail(trail.id, values);
+        console.log(trails); // Call the updateTrail function passed from the context
       }
       setIsEditing(false); // Exit the editing mode once the update is done
     },
@@ -101,27 +104,3 @@ function TrailCard({ trail }) {
   // );
 }
 export default TrailCard;
-
-// function TrailCard() {
-//   const { trail, parks } = useContext(MyContext);
-
-//   return (
-//     <div>
-//       {/* <h2>Trails</h2> */}
-//       <ul>
-//         {trail.map((trail) => {
-//           // Find the park that corresponds to the trail's parkId
-//           const park = parks.find((park) => park.id === trail.park_id);
-
-//           return (
-//             <li key={trail.id}>
-//               {trail.name} - Difficulty: {trail.difficulty} - Dog Friendly:{" "}
-//               {trail.dog_friendly ? "Yes" : "No"} - Park:{" "}
-//               {park ? park.name : "Park not found"}
-//             </li>
-//           );
-//         })}
-//       </ul>
-//     </div>
-//   );
-// }

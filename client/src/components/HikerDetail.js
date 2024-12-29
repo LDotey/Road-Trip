@@ -75,7 +75,7 @@ function HikerDetail() {
 
   // Delete hiker
   const handleDelete = (id) => {
-    console.log("Deleting hiker with ID:", id); // Add a log to confirm the ID being passed
+    console.log("Deleting hiker with ID:", id); //  confirm the ID being passed
 
     fetch(`/hikers/${id}`, {
       method: "DELETE",
@@ -95,7 +95,7 @@ function HikerDetail() {
   if (!hiker) {
     return <div>Loading...</div>; // You can show a loading spinner here
   }
-  console.log("formik.values.trails:", formik.values.trails);
+  // console.log("formik.values.trails:", formik.values.trails);
   return (
     <div>
       <h2>Hiker Details:</h2>

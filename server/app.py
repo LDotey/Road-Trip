@@ -68,14 +68,13 @@ class Hikers(Resource):
         hiker.name = data.get("name", hiker.name)
         hiker.skill_level = data.get("skill_level", hiker.skill_level)
 
-        # Update trails if provided
+        # update trails if provided
         if "trails" in data:
-            # Assuming 'trails' is a list of trail objects with IDs
-            hiker.trails = []  # Reset the current trails (if needed)
+            hiker.trails = []  
             for trail_data in data["trails"]:
-                trail = Trail.query.get(trail_data["id"])  # Get the trail by ID
+                trail = Trail.query.get(trail_data["id"])  
                 if trail:
-                    hiker.trails.append(trail)  # Add the selected trail to the hiker's list
+                    hiker.trails.append(trail)  
 
         db.session.commit()
         return hiker.to_dict(), 200
@@ -135,16 +134,16 @@ class Trails(Resource):
 
         return trail.to_dict(), 200
     
-    def delete(self, id):
-        # Delete a trail by its ID
-        trail = Trail.query.get(id)
-        if not trail:
-            return {"error": "Trail not found"}, 404
+    # def delete(self, id):
+    #     # Delete a trail by its ID
+    #     trail = Trail.query.get(id)
+    #     if not trail:
+    #         return {"error": "Trail not found"}, 404
 
-        db.session.delete(trail)
-        db.session.commit()
+    #     db.session.delete(trail)
+    #     db.session.commit()
 
-        return {"message": "Trail deleted successfully"}, 200
+    #     return {"message": "Trail deleted successfully"}, 200
               
 class ParkDetail(Resource):
     def get(self, park_id):
@@ -161,7 +160,6 @@ api.add_resource(ParkDetail, '/park/<int:park_id>')
 
 
 # api.add_resource(TrailsForPark, '/park/<int:park_id>/trails')
-# api.add_resource(ParkDetail, '/park/<int:park_id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
