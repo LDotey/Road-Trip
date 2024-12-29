@@ -44,17 +44,19 @@ const MyProvider = ({ children }) => {
     })
       .then((response) => response.json())
       .then((updatedTrail) => {
-        console.log("Updated Trail from server:", updatedTrail);
-        setTrails((prevTrails) => {
-          const updatedTrails = prevTrails.map((trail) =>
-            trail.id === id ? { ...trail, ...updatedTrail } : trail
-          );
-          console.log(
-            "Updated Trails Array (after state change):",
-            updatedTrails
-          );
-          return updatedTrails;
-        });
+        // console.log("Updated Trail from server:", updatedTrail);
+        // setTrails((prevTrails) => {
+        //   const updatedTrails = prevTrails.map((trail) =>
+        //     trail.id === id ? { ...trail, ...updatedTrail } : trail
+        //   );
+        //   console.log(
+        //     "Updated Trails Array (after state change):",
+        //     updatedTrails
+        //   );
+        //   return updatedTrails;
+        // });
+        console.log(updatedTrail);
+        setTrails(updatedTrail);
       })
       .catch((error) => {
         console.error("Error updating trail:", error);

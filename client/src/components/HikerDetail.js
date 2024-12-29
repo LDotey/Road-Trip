@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 import { MyContext } from "./AppContext";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 function HikerDetail() {
   const { id } = useParams();
   const { hiker, setHiker, hikers, setHikers, trails, updateHiker } =
-    useContext(MyContext); // Context state for hikers and trails
-  // const [hiker, setHiker] = useState(null); // To store the current hiker
+    useContext(MyContext);
   const [isEditing, setIsEditing] = useState(false); // To toggle edit mode
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Find the hiker from the context based on the `id` from URL
@@ -83,6 +84,8 @@ function HikerDetail() {
       .then((response) => {
         if (response.ok) {
           setHikers((prev) => prev.filter((hiker) => hiker.id !== id));
+
+          navigate("/hikers");
         } else {
           console.error("Failed to delete hiker");
         }
@@ -93,7 +96,7 @@ function HikerDetail() {
   };
 
   if (!hiker) {
-    return <div>Loading...</div>; // You can show a loading spinner here
+    return <div>Loading...</div>;
   }
   // console.log("formik.values.trails:", formik.values.trails);
   return (
@@ -192,7 +195,10 @@ function HikerDetail() {
           ) : (
             <p>No trails selected yet.</p>
           )}
+          <br />
           <button onClick={handleEditClick}>Edit this Hiker</button>
+          <br />
+          <br />
           <button onClick={() => handleDelete(hiker.id)}>
             Delete this Hiker
           </button>

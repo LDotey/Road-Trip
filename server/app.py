@@ -79,6 +79,26 @@ class Hikers(Resource):
         db.session.commit()
         return hiker.to_dict(), 200
    
+    # def delete(self, id):
+    #     try:
+    #         # Fetch the hiker to delete
+    #         hiker_to_delete = Hiker.query.get(id)
+    #         if not hiker_to_delete:
+    #             return {'message': 'Hiker not found'}, 404
+
+    #         # Detach the trails associated with the hiker
+    #         for trail in hiker_to_delete.trails:
+    #             trail.hiker.id = None  # Set hiker_id to None to detach the trail
+    #         db.session.commit()  # Commit the changes
+
+    #         # Now delete the hiker
+    #         db.session.delete(hiker_to_delete)
+    #         db.session.commit()
+
+    #         return {'message': 'Hiker deleted successfully'}, 200
+    #     except Exception as e:
+    #         db.session.rollback()
+    #         return {'message': f'Error deleting hiker: {str(e)}'}, 500
 
     def delete(self, id):
         hiker = Hiker.query.filter_by(id=id).first()

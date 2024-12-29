@@ -9,7 +9,7 @@ function TrailCard({ trail }) {
   const { trails, updateTrail } = useContext(MyContext);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Formik form setup for editing the trail
+  // Formik form for editing the trail
   const formik = useFormik({
     initialValues: {
       name: trail.name,
@@ -19,6 +19,7 @@ function TrailCard({ trail }) {
     enableReinitialize: true,
     onSubmit: (values) => {
       console.log("Formik Values:", formik.values);
+      console.log("Valeues:", values);
 
       // Only update if the values are different from the initial trail values
       if (
@@ -27,7 +28,7 @@ function TrailCard({ trail }) {
         values.dog_friendly !== trail.dog_friendly
       ) {
         updateTrail(trail.id, values);
-        console.log(trails); // Call the updateTrail function passed from the context
+        console.log(trail); // Call the updateTrail function passed from the context
       }
       setIsEditing(false); // Exit the editing mode once the update is done
     },
