@@ -6,7 +6,7 @@ import CreateTrail from "./NewTrailForm";
 
 function ParkDetailPage() {
   const { id } = useParams();
-  const { parks, setTrails } = useContext(MyContext);
+  const { parks, setParks, setTrails } = useContext(MyContext);
   const [park, setPark] = useState(null);
 
   console.log("park id from url:", id);
@@ -23,8 +23,9 @@ function ParkDetailPage() {
   return park ? (
     <div className="park-detail">
       <h2>{park.name}</h2>
-      <img src={park.image} alt={park.name} className="park-image" />
       <p>{park.state}</p>
+      <img src={park.image} alt={park.name} className="park-image" />
+      {/* <p>{park.state}</p> */}
 
       <h2>{park.name} Trails</h2>
 
@@ -39,6 +40,7 @@ function ParkDetailPage() {
                 trail={trail}
                 setTrails={setTrails}
                 parks={parks}
+                setParks={setParks}
               />
             );
           })

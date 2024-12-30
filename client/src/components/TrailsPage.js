@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 function TrailCard({ trail }) {
   console.log("Trail prop in TrailCard:", trail); // Debugging log
 
-  const { trails, updateTrail } = useContext(MyContext);
+  const { trails, updateTrail, deleteTrail } = useContext(MyContext);
   const [isEditing, setIsEditing] = useState(false);
 
   // Formik form for editing the trail
@@ -38,6 +38,9 @@ function TrailCard({ trail }) {
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
+  // const handleDeleteTrail = () => {
+  //   deleteTrail();
+  // };
   return (
     <div className="trail-card">
       {/* Trail Name */}
@@ -83,6 +86,9 @@ function TrailCard({ trail }) {
       <button onClick={handleEditClick}>
         {isEditing ? "Cancel" : "Edit this Trail"}
       </button>
+      <br />
+      {/* <button onClick={deleteTrail}> Delete this Trail </button> */}
+      <button onClick={() => deleteTrail(trail.id)}>Delete this Trail</button>
 
       {/* If editing, submit the form */}
       {isEditing && (

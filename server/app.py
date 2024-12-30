@@ -139,6 +139,7 @@ class Trails(Resource):
     def patch(self, id):
         # Update an existing trail
         data = request.get_json()
+        # breakpoint()
         trail = Trail.query.get(id)
         if not trail:
             return {"error": "Trail not found"}, 404
@@ -154,16 +155,18 @@ class Trails(Resource):
 
         return trail.to_dict(), 200
     
-    # def delete(self, id):
-    #     # Delete a trail by its ID
-    #     trail = Trail.query.get(id)
-    #     if not trail:
-    #         return {"error": "Trail not found"}, 404
+    def delete(self, id):
+        # Delete a trail by its ID
+        trail = Trail.query.get(id)
+        if not trail:
+            return {"error": "Trail not found"}, 404
+        
+        park_id = trail.park_id
 
-    #     db.session.delete(trail)
-    #     db.session.commit()
+        db.session.delete(trail)
+        db.session.commit()
 
-    #     return {"message": "Trail deleted successfully"}, 200
+        return {"message": "Trail deleted successfully", "id": id, "park_id": park_id}, 200
               
 class ParkDetail(Resource):
     def get(self, park_id):

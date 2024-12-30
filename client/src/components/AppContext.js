@@ -44,17 +44,16 @@ const MyProvider = ({ children }) => {
     })
       .then((response) => response.json())
       .then((updatedTrail) => {
-        // console.log("Updated Trail from server:", updatedTrail);
-        // setTrails((prevTrails) => {
-        //   const updatedTrails = prevTrails.map((trail) =>
-        //     trail.id === id ? { ...trail, ...updatedTrail } : trail
-        //   );
-        //   console.log(
-        //     "Updated Trails Array (after state change):",
-        //     updatedTrails
-        //   );
-        //   return updatedTrails;
-        // });
+        const updatedPark = parks.find((p) => p.id === updatedTrail.park_id);
+        const updatedTrails = updatedPark.trails.map((t) =>
+          t.id === updatedTrail.id ? updatedTrail : t
+        );
+        updatedPark.trails = updatedTrails;
+        const updatedParks = parks.map((p) =>
+          p.id === updatedTrail.park_id ? updatedPark : p
+        );
+        setParks(updatedParks);
+
         console.log(updatedTrail);
         setTrails(updatedTrail);
       })
@@ -62,30 +61,108 @@ const MyProvider = ({ children }) => {
         console.error("Error updating trail:", error);
       });
   };
-  // const updateTrail = async (id, updatedTrailData) => {
-  //   try {
-  //     const response = await fetch(`/trails/${id}`, {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(updatedTrailData),
-  //     });
 
-  //     if (response.ok) {
-  //       const updatedTrail = await response.json();
-  //       setTrails((prevTrails) =>
-  //         prevTrails.map((trail) =>
-  //           trail.id === updatedTrail.id ? updatedTrail : trail
-  //         )
-  //       );
-  //     } else {
-  //       console.error("Failed to update trail");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating trail:", error);
-  //   }
+  // const deleteTrail = (id) => {
+  //   fetch(`/trails/${id}`, {
+  //     method: "DELETE",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("Deleted Trail:", data);
+
+  //       if (data.message === "Trail deleted successfully") {
+  //         const updatedPark = parks.find((park) => park.id === data.park_id);
+
+  //         if (updatedPark) {
+  //           // update the parks state with the modified park
+  //           const updatedParks = parks.map((park) =>
+  //             park.id === updatedPark.id ? updatedPark : park
+  //           );
+  //           setParks(updatedParks); // update state with the new park list
+  //           // Also update the trails state to remove the trail
+  //           console.log("Updated Parks after deleting trail:", updatedParks);
+
+  //           const updatedTrails = trails.filter(
+  //             (trail) => trail.id !== data.id
+  //           );
+  //           setTrails(updatedTrails); // Update the trails state
+  //         } else {
+  //           console.error("Failed to find the park for the deleted trail.");
+  //         }
+  //       } else {
+  //         console.error("Failed to delete trail:", data);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting trail:", error);
+  //     });
   // };
+
+  const deleteTrail = (id) => {
+    fetch(`/trails/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Deleted Trail Response:", data);
+
+        if (data.message === "Trail deleted successfully") {
+          const updatedParks = parks.map((park) => {
+            if (park.id === data.park_id) {
+              // filter out the deleted trail from the park's trails array
+              park.trails = park.trails.filter((trail) => trail.id !== id);
+            }
+            return park;
+          });
+
+          //  the updated parks state
+          console.log("Updated Parks after deleting trail:", updatedParks);
+
+          // Update the parks state with the new parks list
+          setParks(updatedParks);
+
+          // Optionally, update the trails state globally (if needed)
+          const updatedTrails = trails.filter((trail) => trail.id !== id);
+          setTrails(updatedTrails);
+        } else {
+          console.error("Failed to delete trail:", data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting trail:", error);
+      });
+  };
+
+  // const deleteTrail = (id) => {
+  //   fetch(`trails/${id}`, {
+  //     method: "DELETE",
+  //   }).then((response) => response.json())
+  //     .then((deletedTrail) => {
+  //     if (response.ok) {
+  //       const updatedPark = parks.find((p) => p.id === deletedTrail.park_id);
+  //       const updatedTrails = updatedPark.trails.map((t) =>
+  //       t.id === deletedTrail.id ? )
+
+  //       // setParks((prev) => prev.filter((park) => park.id !== id));
+  //     } else {
+  //       console.error("Failed to delete trail");
+  //     }
+  //   });
+  // };
+  // unfinished ~~
+  // const updateHiker = (id, updatedHikerData) => {
+  //   fetch(`/hikers/${id}`, {
+  //     method: "PATCH",
+  //     header: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(updatedHikerData),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((updatedHiker) => {
+  //       const updatedPark = parks
+  //     })
+  // }
 
   const updateHiker = async (id, updatedHikerData) => {
     try {
@@ -123,6 +200,7 @@ const MyProvider = ({ children }) => {
         trails,
         setTrails,
         updateTrail,
+        deleteTrail,
         updateHiker,
         hiker,
         setHiker,
