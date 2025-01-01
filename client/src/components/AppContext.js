@@ -143,14 +143,20 @@ const MyProvider = ({ children }) => {
           const updatedParks = parks.map((park) => {
             return {
               ...park,
-              hikers: park.hikers.filter((hiker) => hiker.id !== id),
-              trails: park.trails.map((trail) => {
-                // Detach the trail from the hiker if it's associated with the deleted hiker
-                if (trail.hiker_id === id) {
-                  trail.hiker_id = null; // Disassociate the hiker from the trail
-                }
-                return trail;
-              }),
+              // Check if park.hikers exists and is an array before calling filter
+              hikers: Array.isArray(park.hikers)
+                ? park.hikers.filter((hiker) => hiker.id !== id)
+                : park.hikers,
+              // Check if park.trails exists and is an array before calling map
+              trails: Array.isArray(park.trails)
+                ? park.trails.map((trail) => {
+                    // Detach the trail from the hiker if it's associated with the deleted hiker
+                    if (trail.hiker_id === id) {
+                      trail.hiker_id = null; // Disassociate the hiker from the trail
+                    }
+                    return trail;
+                  })
+                : park.trails,
             };
           });
 
