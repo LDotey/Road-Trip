@@ -2,9 +2,11 @@ import React, { useContext } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { MyContext } from "./AppContext";
+import { useNavigate } from "react-router-dom";
 
 function CreatePark() {
   const { setParks } = useContext(MyContext);
+  const navigate = useNavigate();
 
   const formSchema = yup.object().shape({
     name: yup.string().required("Park name is required"),
@@ -35,6 +37,9 @@ function CreatePark() {
         .then((newPark) => {
           console.log(newPark);
           setParks((prevParks) => [...prevParks, newPark]);
+
+          formik.resetForm();
+          navigate("/parks");
         })
         .catch((error) => {
           console.error("Error creating park:", error);

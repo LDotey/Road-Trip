@@ -5,7 +5,7 @@ import { MyContext } from "./AppContext";
 import { useParams } from "react-router-dom";
 
 function CreateTrail() {
-  const { setParks, setTrails, hikers } = useContext(MyContext);
+  const { setParks, setTrails, setHikers, hikers } = useContext(MyContext);
   const { id } = useParams();
   // console.log(useParams());
 
@@ -59,6 +59,16 @@ function CreateTrail() {
                 : park
             )
           );
+          // Update the hiker's trails if a hiker is assigned to the new trail
+          if (newTrail.hiker_id) {
+            setHikers((prevHikers) =>
+              prevHikers.map((hiker) =>
+                hiker.id === newTrail.hiker_id
+                  ? { ...hiker, trails: [...hiker.trails, newTrail] }
+                  : hiker
+              )
+            );
+          }
           formik.resetForm();
         })
 

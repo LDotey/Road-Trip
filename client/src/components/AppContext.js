@@ -61,43 +61,7 @@ const MyProvider = ({ children }) => {
         console.error("Error updating trail:", error);
       });
   };
-
-  // const deleteTrail = (id) => {
-  //   fetch(`/trails/${id}`, {
-  //     method: "DELETE",
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Deleted Trail:", data);
-
-  //       if (data.message === "Trail deleted successfully") {
-  //         const updatedPark = parks.find((park) => park.id === data.park_id);
-
-  //         if (updatedPark) {
-  //           // update the parks state with the modified park
-  //           const updatedParks = parks.map((park) =>
-  //             park.id === updatedPark.id ? updatedPark : park
-  //           );
-  //           setParks(updatedParks); // update state with the new park list
-  //           // Also update the trails state to remove the trail
-  //           console.log("Updated Parks after deleting trail:", updatedParks);
-
-  //           const updatedTrails = trails.filter(
-  //             (trail) => trail.id !== data.id
-  //           );
-  //           setTrails(updatedTrails); // Update the trails state
-  //         } else {
-  //           console.error("Failed to find the park for the deleted trail.");
-  //         }
-  //       } else {
-  //         console.error("Failed to delete trail:", data);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error deleting trail:", error);
-  //     });
-  // };
-
+  // Delete trail
   const deleteTrail = (id) => {
     fetch(`/trails/${id}`, {
       method: "DELETE",
@@ -133,37 +97,7 @@ const MyProvider = ({ children }) => {
       });
   };
 
-  // const deleteTrail = (id) => {
-  //   fetch(`trails/${id}`, {
-  //     method: "DELETE",
-  //   }).then((response) => response.json())
-  //     .then((deletedTrail) => {
-  //     if (response.ok) {
-  //       const updatedPark = parks.find((p) => p.id === deletedTrail.park_id);
-  //       const updatedTrails = updatedPark.trails.map((t) =>
-  //       t.id === deletedTrail.id ? )
-
-  //       // setParks((prev) => prev.filter((park) => park.id !== id));
-  //     } else {
-  //       console.error("Failed to delete trail");
-  //     }
-  //   });
-  // };
-  // unfinished ~~
-  // const updateHiker = (id, updatedHikerData) => {
-  //   fetch(`/hikers/${id}`, {
-  //     method: "PATCH",
-  //     header: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(updatedHikerData),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((updatedHiker) => {
-  //       const updatedPark = parks
-  //     })
-  // }
-
+  // Update Hiker
   const updateHiker = async (id, updatedHikerData) => {
     try {
       const response = await fetch(`/hikers/${id}`, {
@@ -190,11 +124,81 @@ const MyProvider = ({ children }) => {
     }
   };
 
+  // Delete Hiker
+  const deleteHiker = (id) => {
+    console.log("deleteHiker called with id:", id);
+
+    fetch(`/hikers/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Deleted Hiker response:", data);
+
+        if (data.message === "Hiker deleted successfully") {
+          // Update the hikers state (remove the deleted hiker)
+          const updatedHikers = hikers.filter((hiker) => hiker.id !== id);
+
+          // Update the parks state (remove hiker from any park that has the hiker)
+          const updatedParks = parks.map((park) => {
+            return {
+              ...park,
+              hikers: park.hikers.filter((hiker) => hiker.id !== id),
+              trails: park.trails.map((trail) => {
+                // Detach the trail from the hiker if it's associated with the deleted hiker
+                if (trail.hiker_id === id) {
+                  trail.hiker_id = null; // Disassociate the hiker from the trail
+                }
+                return trail;
+              }),
+            };
+          });
+
+          // set the updated state of hikers and parks
+          setHikers(updatedHikers);
+          setParks(updatedParks);
+
+          console.log("Updated hikers:", updatedHikers);
+          console.log("Updated parks after deleting hiker:", updatedParks);
+        } else {
+          console.error("Failed to delete hiker:", data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting hiker:", error);
+      });
+  };
+
+  const updatePark = async (id, updatedParkData) => {
+    try {
+      const response = await fetch(`/parks/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedParkData),
+      });
+      if (response.ok) {
+        const updatedPark = await response.json();
+        setParks((prevParks) =>
+          prevParks.map((park) =>
+            park.id === updatedPark.id ? updatedPark : park
+          )
+        );
+        // setPark(updatedPark);
+      } else {
+        console.error("failed to update park");
+      }
+    } catch (error) {
+      console.error("Error updating park:", error);
+    }
+  };
   return (
     <MyContext.Provider
       value={{
         parks,
         setParks,
+        updatePark,
         hikers,
         setHikers,
         trails,
@@ -204,6 +208,7 @@ const MyProvider = ({ children }) => {
         updateHiker,
         hiker,
         setHiker,
+        deleteHiker,
       }}
     >
       {children}

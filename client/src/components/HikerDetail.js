@@ -7,8 +7,15 @@ import { useNavigate } from "react-router-dom";
 
 function HikerDetail() {
   const { id } = useParams();
-  const { hiker, setHiker, hikers, setHikers, trails, updateHiker } =
-    useContext(MyContext);
+  const {
+    hiker,
+    setHiker,
+    hikers,
+    setHikers,
+    trails,
+    updateHiker,
+    deleteHiker,
+  } = useContext(MyContext);
   const [isEditing, setIsEditing] = useState(false); // To toggle edit mode
   const navigate = useNavigate();
 
@@ -75,25 +82,55 @@ function HikerDetail() {
   };
 
   // Delete hiker
-  const handleDelete = (id) => {
-    console.log("Deleting hiker with ID:", id); //  confirm the ID being passed
+  // const handleDelete = (id) => {
+  //   console.log("Deleting hiker with ID:", id); //  confirm the ID being passed
 
-    fetch(`/hikers/${id}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) {
-          setHikers((prev) => prev.filter((hiker) => hiker.id !== id));
+  //   fetch(`/hikers/${id}`, {
+  //     method: "DELETE",
+  //   })
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         setHikers((prev) => prev.filter((hiker) => hiker.id !== id));
 
-          navigate("/hikers");
-        } else {
-          console.error("Failed to delete hiker");
-        }
-      })
-      .catch((error) => {
-        console.error("Error deleting hiker:", error);
-      });
-  };
+  //         navigate("/hikers");
+  //       } else {
+  //         console.error("Failed to delete hiker");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting hiker:", error);
+  //     });
+  // };
+  // const handleDelete = (id) => {
+  //   fetch(`/hikers/${id}`, {
+  //     method: "DELETE",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("Deleted Hiker response:", data);
+
+  //       if (data.message === "Hiker deleted successfully") {
+  //         const updatedHikers = parks.map((park) => {
+  //           if (park.id === data.park_id) {
+  //             park.hikers = park.hikers.filter((hiker) => hiker.id !== id);
+  //           }
+  //           return park;
+  //         });
+  //         // updated parks state
+  //         console.log("updated parks after deleting hiker:", updatedHikers);
+
+  //         setHikers(updatedHikers);
+
+  //         const updatedTrails = trails.filter((trail) => trail.id !== id);
+  //         setTrails(updatedTrails);
+  //       } else {
+  //         console.error("failed to delete hiker", data);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("error deleting trail:", error);
+  //     });
+  // };
 
   if (!hiker) {
     return <div>Loading...</div>;
@@ -199,7 +236,7 @@ function HikerDetail() {
           <button onClick={handleEditClick}>Edit this Hiker</button>
           <br />
           <br />
-          <button onClick={() => handleDelete(hiker.id)}>
+          <button onClick={() => deleteHiker(hiker.id)}>
             Delete this Hiker
           </button>
         </div>
