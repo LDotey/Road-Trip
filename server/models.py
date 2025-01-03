@@ -19,9 +19,7 @@ class Park(db.Model, SerializerMixin):
     
     hikers = association_proxy('trails', 'hiker',
                                creator=lambda hiker_obj: Trail(hiker=hiker_obj))
-# Association proxy to get projects for this employee through assignments
-    # projects = association_proxy('assignments', 'project',
-    #                              creator=lambda project_obj: Assignment(project=project_obj))
+
 
     def __repr__(self):
         return f'<Park {self.id}, {self.name}>'

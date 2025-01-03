@@ -19,7 +19,7 @@ function HikersList() {
       <ul>
         {hikers.map((hiker) => (
           <li key={hiker.id}>
-            <Link to={`/hiker/${hiker.id}`}>
+            <Link to={`/hikers/${hiker.id}`}>
               {hiker.name} ({hiker.skill_level})
             </Link>
           </li>

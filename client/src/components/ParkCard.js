@@ -36,7 +36,7 @@ function ParkCard({ park, onClick }) {
   };
 
   const handleClick = (e) => {
-    // Prevent the park card from being clicked when editing
+    // prevent the park card from being clicked when editing
     if (isEditing) {
       return;
     }
@@ -46,7 +46,7 @@ function ParkCard({ park, onClick }) {
 
   return (
     <div className="park-card">
-      {/* Now the park-card div only contains the park info, not the button */}
+      {/* now the park-card div only contains the park info, not the button */}
       <div className="park-card-content" onClick={handleClick}>
         {isEditing ? (
           <input
@@ -91,7 +91,7 @@ function ParkCard({ park, onClick }) {
           <button
             type="submit"
             onClick={(e) => {
-              e.stopPropagation(); // Prevent the click event from bubbling up to the parent
+              e.stopPropagation(); // prevent the click event from bubbling up to the parent
               formik.handleSubmit(e);
             }}
           >

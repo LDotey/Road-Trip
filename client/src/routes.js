@@ -4,7 +4,6 @@ import ParkDetailPage from "./components/ParkDetailPage";
 import HikersList from "./components/HikersPage";
 import TrailCard from "./components/TrailsPage";
 import HikerDetail from "./components/HikerDetail";
-import CreateTrail from "./components/NewTrailForm";
 
 const routes = [
   {
@@ -16,7 +15,7 @@ const routes = [
         element: <ParkPage />,
       },
       {
-        path: "/park/:id",
+        path: "/parks/:id",
         element: <ParkDetailPage />,
       },
       {
@@ -24,17 +23,13 @@ const routes = [
         element: <HikersList />,
       },
       {
-        path: "/hiker/:id",
+        path: "/hikers/:id",
         element: <HikerDetail />,
       },
       {
         path: "/trails",
         element: <TrailCard />,
       },
-      // {
-      //   path: "/trails",
-      //   element: <CreateTrail />,
-      // },
     ],
   },
 ];

@@ -34,6 +34,8 @@ function CreateHiker() {
         .then((newHiker) => {
           console.log(newHiker);
           setHikers((prevHikers) => [...prevHikers, newHiker]);
+
+          formik.resetForm();
         })
         .catch((error) => {
           console.error("Error creating hiker:", error);

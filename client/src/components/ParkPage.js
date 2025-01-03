@@ -16,7 +16,7 @@ function ParkPage() {
   };
 
   const handleParkClick = (parkId) => {
-    navigate(`/park/${parkId}`);
+    navigate(`/parks/${parkId}`);
   };
 
   return (
